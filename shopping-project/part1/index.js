@@ -39,12 +39,14 @@ ul.addEventListener('click', (e) => {
 // 등록버튼 클릭 시 이벤트핸들러
 addBtn.addEventListener('click', () => {
   handleMakeList(wishList.value);
+  wishList.value = '';
 });
 
 // 엔터 시 이벤트핸들러
 wishList.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' || e.keyCode === 13) {
     handleMakeList(wishList.value);
+    wishList.value = '';
   }
 });
 

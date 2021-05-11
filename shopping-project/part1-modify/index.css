@@ -1,69 +1,96 @@
 * {
   box-sizing: border-box;
-  margin: 0;
+}
+
+ul {
   padding: 0;
 }
 
 body {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(255, 246, 230);
-}
-
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 450px;
-  padding: 10px 0;
-  border-radius: 20px;
-  background: linear-gradient(91deg, rgba(255,200,237,1) 0%, rgba(240,174,210,1) 33%, rgba(46,185,213,1) 100%);
-}
-
-.title {
-  color: rgb(255, 255, 255);
-  font-family: serif, Georgia, 'Times New Roman', Times;
-  margin: 10px 0;
-}
-
-.shopping__lists {
-  width: 100%;
-  height: 500px;
-  background-color: rgb(245, 234, 234);
-  padding: 5px;
-}
-
-.list {
-  display: flex;
-  justify-content: space-between;
-  padding: 5px 20px;
-}
-
-li {
-  list-style: none;
-}
-
-.shopping__wish-list {
-  width: 100%;
-  height: 40px;
-  border: none;
-  padding: 5px;
+  background-color: #ced3df;
+  text-align: center;
 }
 
 button {
+  outline: none;
+  background: transparent;
   border: none;
-  color: white;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: rgb(41, 35, 35);
+  cursor: pointer;
 }
 
-.list__add {
-  margin-top: 10px;
+.list {
+  width: 400px;
+  margin: auto;
+  background-color: #f1f0f7;
+  border-radius: 20px;
+  -webkit-box-shadow: 9px 9px 11px 6px rgba(0,0,0,0.48); 
+  box-shadow: 9px 9px 11px 6px rgba(0,0,0,0.48);
 }
-.list__add .fa-cart-plus {
+
+.header {
+  height: 48px;
+  padding: 8px;
   font-size: 24px;
+  background: rgba(237, 193, 211);
+  background: linear-gradient(166deg, rgba(237, 193, 211, 1) 0%, rgba(219, 192, 216, 1) 35%,rgba(127, 188, 242, 1) 100%);
+  border-radius: 20px 20px 0 0;
+  color: white;
+}
+
+.items {
+  height: 500px;
+  overflow-y: auto; /* item들이 많아지면, 자동으로 스크롤바 생기게 설정*/
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 32px;
+}
+
+.item__delete {
+  font-size: 16px;
+  transition: all 300ms ease-in;
+}
+
+.item__delete:hover {
+  color: red;
+  transform: scale(1.1);
+}
+
+.item__divider {
+  width: 90%;
+  height: 1px;
+  background-color: lightgray;
+  margin: auto; /* div는 block level이기 때문에 자동적으로 오른쪽에 margin이 들어간다 */
+}
+
+.footer {
+  background: rgba(237, 193, 211);
+  background: linear-gradient(166deg, rgba(237, 193, 211, 1) 0%, rgba(219, 192, 216, 1) 35%,rgba(127, 188, 242, 1) 100%);
+  border-radius: 0 0 20px 20px;
+}
+
+.footer__input {
+  width: 100%;
+  height: 32px;
+  border: none;
+  outline: none;
+  font-size: 24px;
+  padding: 0 16px;
+}
+
+.footer__button {
+  width: 48px;
+  height: 48px;
+  font-size: 28px;
+  background: black;
+  border-radius: 50%;
+  margin: 10px;
+  color: white;
+  transition: transform 300ms ease-in;
+}
+
+.footer__button:hover {
+  transform: scale(1.1);
 }
