@@ -4,8 +4,7 @@
   1. 목록 오른쪽에는 휴지통 아이콘이 있는데 이것을 클릭하면, 해당 쇼핑 목록이 리스트에서 지워진다.
 */
 
-// input tag안의 내용을 읽어오기 
-// 버튼 클릭이벤트 / 엔터 이벤트 핸들러 만들기
+const main = document.querySelector('#shopping');
 const ul = document.querySelector('.shopping__lists');
 const removeBtn = document.querySelectorAll('.list__delete');
 const wishList = document.querySelector('.shopping__wish-list');
@@ -13,6 +12,11 @@ const addBtn = document.querySelector('.list__add .fa-cart-plus');
 
 // 리스트 추가 함수
 handleMakeList = (shoppingList) => {
+  console.log('들어옴?' + shoppingList);
+  if (shoppingList === '') {
+    return;
+  }
+
   const li = document.createElement('li');
   const span = document.createElement('span');
   const i = document.createElement('i');
@@ -27,26 +31,22 @@ handleMakeList = (shoppingList) => {
   return ul;
 }
 
-// remove list handle
-ul.addEventListener('click', (e) => {
-  // console.log(e.target === removeBtn[0])
-  if (e.target.classList[0] === 'fas') {
-    e.target.parentElement.remove();
-  }
-
-});
-
-// 등록버튼 클릭 시 이벤트핸들러
-addBtn.addEventListener('click', () => {
-  handleMakeList(wishList.value);
-  wishList.value = '';
-});
-
 // 엔터 시 이벤트핸들러
 wishList.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' || e.keyCode === 13) {
+  if (e.key === 'Enter') {
+    handleMakeList(wishList.value);
+    wishList.value = '';
+    wishList.focus();
+  }
+});
+
+// event Handler
+main.addEventListener('click', (e) => {
+  if (e.target.tagName === 'I' && e.target.classList[1] === 'fa-trash-alt') {
+    console.log(e.target.tagName);
+    e.target.parentElement.remove();
+  } else if (e.target.tagName === 'BUTTON' || e.target.classList[1] === 'fa-cart-plus') {
     handleMakeList(wishList.value);
     wishList.value = '';
   }
 });
-
