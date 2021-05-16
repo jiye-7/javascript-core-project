@@ -12,7 +12,6 @@ const addBtn = document.querySelector('.list__add .fa-cart-plus');
 
 // 리스트 추가 함수
 handleMakeList = (shoppingList) => {
-  console.log('들어옴?' + shoppingList);
   if (shoppingList === '') {
     return;
   }
@@ -48,5 +47,6 @@ main.addEventListener('click', (e) => {
   } else if (e.target.tagName === 'BUTTON' || e.target.classList[1] === 'fa-cart-plus') {
     handleMakeList(wishList.value);
     wishList.value = '';
+    wishList.focus();
   }
 });
