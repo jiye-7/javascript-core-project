@@ -1,4 +1,4 @@
-### 1. Shopping List project
+### 1. 🎁 Shopping List project
 
 #### Shopping List Project는 아래의 기능을 구현하는 프로젝트입니다.
 
