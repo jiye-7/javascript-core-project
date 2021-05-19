@@ -14,6 +14,7 @@ const body = document.querySelector('body');
 const gameBtn = document.querySelector('.game__btn');
 const gameTime = document.querySelector('.game__timer');
 const gameScore = document.querySelector('.game__score');
+const iTag = document.querySelector('i');
 
 // pop-up 영역
 const popUpSection = document.querySelector('.pop-up');
@@ -39,6 +40,7 @@ function timerFunc() {
   remainingTimeShow();
   return time;
 }
+
 const bgSound = new Audio('./sound/bg.mp3');
 
 let gameTimeInit;
@@ -49,13 +51,14 @@ function gameInit() {
   gameScore.textContent = '10';
 
   bgSound.play();
-  bugPrint();
-  carrotPrint();
+  randomItemShow(10, bugImgSrc, 'bug');
+  randomItemShow(10, carrotImgSrc, 'carrot');
+
+  iTag.classList.remove('fa-play');
+  iTag.classList.add('fa-square', 'gamePause');
 
   carrot = 10;
   time = 10;
-
-  randomItemShow();
 
   gameTimeInit = setInterval(() => {
     const returnTime = timerFunc();
@@ -72,15 +75,15 @@ function remainingTimeShow() {
 
 // 게임 실패 시 뜨는 화면
 function gameOverShow() {
-  const sound1 = new Audio('./sound/bug_pull.mp3');
-  sound1.play();
+  const bugSound = new Audio('./sound/bug_pull.mp3');
+  bugSound.play();
   popUp('YOU LOST :(');
 }
 
 // 게임 성공 시 뜨는 화면
 function gameWinShow() {
-  const sound2 = new Audio('./sound/game_win.mp3');
-  sound2.play();
+  const gameWinSound = new Audio('./sound/game_win.mp3');
+  gameWinSound.play();
   popUp('REPLAY? :)');
 }
 
@@ -90,6 +93,7 @@ function popUp(gameMsg) {
   bgSound.pause();
   popUpSection.style.display = 'flex';
   message.textContent = gameMsg;
+  gameBtn.style.pointerEvents = 'none'; // gameBtn click 안 되게 처리
   body.appendChild(popUpSection);
 }
 
@@ -110,35 +114,23 @@ function gameScoreShow() {
 }
 
 // 게임에 벌레, 당근 랜덤으로 뿌리기
-function randomItemShow(imgName, imgSrc, tagClassName) {
-  if (imgName === undefined || imgSrc === undefined || tagClassName === undefined) {
-    return;
-  }
+function randomItemShow(count, imgSrc, tagClassName) {
   // 화면의 위치, top, left를 구해서 랜덤으로 위치
   let rect = gameField.getBoundingClientRect();
 
-  for (let i = 0; i < 10; i++) {
-    const imgName = document.createElement('img');
-    imgName.src = imgSrc;
-    imgName.setAttribute('class', tagClassName);
-    imgName.style.top = Math.random() * (rect.height - 55) + 'px';
-    imgName.style.left = Math.random() * (rect.width - 55) + 'px';
-    gameField.appendChild(imgName);
+  for (let i = 0; i < count; i++) {
+    const image = document.createElement('img');
+    image.src = imgSrc;
+    image.setAttribute('class', tagClassName);
+    image.style.top = Math.random() * (rect.height - 55) + 'px';
+    image.style.left = Math.random() * (rect.width - 55) + 'px';
+    gameField.appendChild(image);
   }
-}
-
-// 게임 화면에 벌레 랜덤으로 뿌리기
-function bugPrint() {
-  randomItemShow('bugImg', bugImgSrc, 'bug');
-}
-
-// 게임 화면에 당근 랜덤으로 뿌리기
-function carrotPrint() {
-  randomItemShow('carrotImg', carrotImgSrc, 'carrot');
 }
 
 // 게임 시작버튼 클릭시 이벤트리스너
 gameBtn.addEventListener('click', gameInit);
+// 게임 당근, 벌레 클릭시 이벤트 핸들러
 gameField.addEventListener('click', (e) => {
   if (e.target.className === 'carrot') {
     const carrotSound = new Audio('./sound/carrot_pull.mp3');
@@ -149,4 +141,12 @@ gameField.addEventListener('click', (e) => {
     gameOverShow();
   }
 });
+// popUp창 게임 재시작 버튼 클릭 시 
 popUpBtn.addEventListener('click', gameInit);
+
+gameBtn.addEventListener('click', (e) => {
+  if (e.target.className === 'gamePause') {
+    clearInterval(gameTimeInit);
+    bgSound.pause();
+  }
+})
