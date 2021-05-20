@@ -6,6 +6,7 @@
 body {
   margin-top: 50px;
   text-align: center;
+  background-color: rgb(236, 200, 164);
 }
 
 button {
@@ -54,6 +55,8 @@ button:hover {
   font-size: 32px;
   margin-top: 8px;
   visibility: hidden;
+  user-select: none;
+  cursor: auto;
 }
 
 .game__score {
@@ -68,6 +71,8 @@ button:hover {
   border-radius: 50%;
   color: white;
   visibility: hidden;
+  user-select: none;
+  cursor: auto;
 }
 
 .pop-up {
@@ -109,3 +114,12 @@ button:hover {
   margin-top: 100px;
   position: relative;
 }
+
+.carrot, .bug {
+  transition: transform 200ms ease-in;
+}
+
+.carrot:hover,
+.bug:hover {
+  transform: scale(1.1);
+} 
