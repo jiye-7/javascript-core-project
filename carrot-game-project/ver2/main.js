@@ -9,13 +9,17 @@
 const CARROT_SIZE = 80;
 const CARROT_COUNT = 10;
 const BUG_COUNT = 10;
-const GAME_DURATION_SEC = 7;
+const GAME_DURATION_SEC = 70;
 
 const field = document.querySelector('.game__field');
 const fieldRect = field.getBoundingClientRect(); // field의 전체적인 size, position 등을 알 수 있음
 const gameBtn = document.querySelector('.game__button');
 const gameTimer = document.querySelector('.game__timer');
 const gameScore = document.querySelector('.game__score');
+
+const popUp = document.querySelector('.pop-up');
+const popUpRefresch = document.querySelector('.pop-up__refresh');
+const popUpMessage = document.querySelector('.pop-up__message');
 
 let started = false; // 게임이 시작되었는지를 기억하는 변수
 let score = 0; // 최종 점수를 기억하는 변수
@@ -28,7 +32,7 @@ gameBtn.addEventListener('click', () => {
     startGame();
   }
   started = !started;
-})
+});
 
 function startGame() {
   initGame();
@@ -38,13 +42,19 @@ function startGame() {
 }
 
 function stopGame() {
-
+  stopGameTimer();
+  hideGameButton();
+  showPopUpWithText(`REALPAY❓`);
 }
 
 function showStopButton() {
   const icon = gameBtn.querySelector('.fas');
   icon.classList.add('fa-stop');
   icon.classList.remove('fa-play');
+}
+
+function hideGameButton() {
+  gameBtn.style.visibility = 'hidden';
 }
 
 function showTimerAndScore() {
@@ -67,10 +77,19 @@ function startGameTimer() {
   }, 1000);
 }
 
+function stopGameTimer() {
+  clearInterval(timer);
+}
+
 function updateTimerText(time) {
   const minutes = Math.floor(time / 60); // time인데 sec로 넘어온다. 
   const seconds = time % 60 // 60으로 나누고 남은 값
   gameTimer.innerText = `${minutes}:${seconds}`;
+}
+
+function showPopUpWithText(text) {
+  popUpMessage.innerText = text;
+  popUp.classList.remove('pop-up--hide');
 }
 
 function initGame() {
