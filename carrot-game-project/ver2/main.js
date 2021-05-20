@@ -21,6 +21,12 @@ const popUp = document.querySelector('.pop-up');
 const popUpRefresch = document.querySelector('.pop-up__refresh');
 const popUpMessage = document.querySelector('.pop-up__message');
 
+const carrotSound = new Audio('./sound/carrot_pull.mp3');
+const bugSound = new Audio('./sound/bug_pull.mp3');
+const alertSound = new Audio('./sound/alert.wav');
+const bgSound = new Audio('./sound/bg.mp3');
+const winSound = new Audio('./sound/game_win.mp3');
+
 let started = false; // 게임이 시작되었는지를 기억하는 변수
 let score = 0; // 최종 점수를 기억하는 변수
 let timer = undefined; // 총 남은 시간을 기억하는 변수
@@ -46,6 +52,7 @@ function startGame() {
   showStopButton();
   showTimerAndScore();
   startGameTimer();
+  playSound(bgSound);
 }
 
 function stopGame() {
@@ -53,11 +60,20 @@ function stopGame() {
   stopGameTimer();
   hideGameButton();
   showPopUpWithText(`REALPAY❓`);
+  playSound(alertSound);
+  stopSound(bgSound);
 }
 
 function finishGame(win) {
   started = false;
   hideGameButton();
+  if (win) {
+    playSound(winSound);
+  } else {
+    playSound(bugSound);
+  }
+  stopGameTimer();
+  stopSound(bgSound);
   showPopUpWithText(win ? `YOU WON 🎉` : `YOU LOST 💩`);
 }
 
@@ -112,6 +128,7 @@ function hidePopUp() {
 }
 
 function initGame() {
+  score = 0;
   field.innerHTML = '';
   gameScore.innerText = CARROT_COUNT;
   addItem('carrot', CARROT_COUNT, 'img/carrot.png');
@@ -127,13 +144,22 @@ function onFieldClick(e) {
     target.remove();
     score++;
     updateScoreBoard();
+    playSound(carrotSound);
     if (score === CARROT_COUNT) {
       finishGame(true);
     }
   } else if (target.matches('.bug')) {
-    stopGameTimer();
     finishGame(false);
   }
+}
+
+function playSound(sound) {
+  sound.currentTime = 0;
+  sound.play();
+}
+
+function stopSound(sound) {
+  sound.pause();
 }
 
 function updateScoreBoard() {
