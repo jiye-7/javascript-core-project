@@ -2,16 +2,82 @@
 /*
   1. init() 함수를 호출 시
     당근, 벌레를 랜덤한 위치에 지정한 다음에 게임 필드에 추가하기
+  2. 실행 버튼을 클릭시 init() 실행, 타이머가 실행 전체 남은 당근의 개수 표기
+  3. gameBtn 클릭시 게임이 초기화되면서 게임 시작버튼을 중지로 바꾸기
+  4. 게임이 시작되면, 타이머와 점수를 보여주기
 */
 const CARROT_SIZE = 80;
+const CARROT_COUNT = 10;
+const BUG_COUNT = 10;
+const GAME_DURATION_SEC = 7;
+
 const field = document.querySelector('.game__field');
 const fieldRect = field.getBoundingClientRect(); // field의 전체적인 size, position 등을 알 수 있음
+const gameBtn = document.querySelector('.game__button');
+const gameTimer = document.querySelector('.game__timer');
+const gameScore = document.querySelector('.game__score');
 
+let started = false; // 게임이 시작되었는지를 기억하는 변수
+let score = 0; // 최종 점수를 기억하는 변수
+let timer = undefined; // 총 남은 시간을 기억하는 변수
+
+gameBtn.addEventListener('click', () => {
+  if (started) {
+    stopGame();
+  } else {
+    startGame();
+  }
+  started = !started;
+})
+
+function startGame() {
+  initGame();
+  showStopButton();
+  showTimerAndScore();
+  startGameTimer();
+}
+
+function stopGame() {
+
+}
+
+function showStopButton() {
+  const icon = gameBtn.querySelector('.fas');
+  icon.classList.add('fa-stop');
+  icon.classList.remove('fa-play');
+}
+
+function showTimerAndScore() {
+  // display: 'none'을 주게되면 렌더트리에 포함이 되지 않아서 field 사이즈에 영향을 줄 수 있기 때문에 보이지 않아야 되니까
+  // css에서는 visibility: hidden으로 줘서 평소에는 보이지 않다가 게임이 시작될 때 보이게 속성을 변경한다.
+  gameTimer.style.visibility = 'visible';
+  gameScore.style.visibility = 'visible';
+}
+
+function startGameTimer() {
+  let remainningTimeSec = GAME_DURATION_SEC;
+  updateTimerText(remainningTimeSec);
+
+  timer = setInterval(() => {
+    if (remainningTimeSec <= 0) {
+      clearInterval(timer);
+      return;
+    }
+    updateTimerText(--remainningTimeSec);
+  }, 1000);
+}
+
+function updateTimerText(time) {
+  const minutes = Math.floor(time / 60); // time인데 sec로 넘어온다. 
+  const seconds = time % 60 // 60으로 나누고 남은 값
+  gameTimer.innerText = `${minutes}:${seconds}`;
+}
 
 function initGame() {
-  // 당근, 벌레 랜덤한 자리에 생성한 뒤 필드에 추가
-  addItem('carrot', 10, 'img/carrot.png');
-  addItem('bug', 10, 'img/bug.png');
+  field.innerHTML = '';
+  gameScore.innerText = CARROT_COUNT;
+  addItem('carrot', CARROT_COUNT, 'img/carrot.png');
+  addItem('bug', BUG_COUNT, 'img/bug.png');
 }
 
 function addItem(className, count, imgPath) {
@@ -37,5 +103,3 @@ function addItem(className, count, imgPath) {
 function randomNumber(min, max) {
   return Math.random() * (max - min) + min;
 }
-
-initGame();

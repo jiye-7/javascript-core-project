@@ -53,6 +53,7 @@ button:hover {
   border-radius: 20px;
   font-size: 32px;
   margin-top: 8px;
+  visibility: hidden;
 }
 
 .game__score {
@@ -66,7 +67,7 @@ button:hover {
   border: 3px solid black;
   border-radius: 50%;
   color: white;
-
+  visibility: hidden;
 }
 
 .pop-up {
