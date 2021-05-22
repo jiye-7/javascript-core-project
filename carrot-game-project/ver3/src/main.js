@@ -1,11 +1,7 @@
 'use strict';
-/*
-  1. init() 함수를 호출 시
-    당근, 벌레를 랜덤한 위치에 지정한 다음에 게임 필드에 추가하기
-  2. 실행 버튼을 클릭시 init() 실행, 타이머가 실행 전체 남은 당근의 개수 표기
-  3. gameBtn 클릭시 게임이 초기화되면서 게임 시작버튼을 중지로 바꾸기
-  4. 게임이 시작되면, 타이머와 점수를 보여주기
-*/
+
+import PopUp from './popup.js';
+
 const CARROT_SIZE = 80;
 const CARROT_COUNT = 10;
 const BUG_COUNT = 10;
@@ -17,10 +13,6 @@ const gameBtn = document.querySelector('.game__button');
 const gameTimer = document.querySelector('.game__timer');
 const gameScore = document.querySelector('.game__score');
 
-const popUp = document.querySelector('.pop-up');
-const popUpRefresch = document.querySelector('.pop-up__refresh');
-const popUpMessage = document.querySelector('.pop-up__message');
-
 const carrotSound = new Audio('./sound/carrot_pull.mp3');
 const bugSound = new Audio('./sound/bug_pull.mp3');
 const alertSound = new Audio('./sound/alert.wav');
@@ -31,6 +23,11 @@ let started = false; // 게임이 시작되었는지를 기억하는 변수
 let score = 0; // 최종 점수를 기억하는 변수
 let timer = undefined; // 총 남은 시간을 기억하는 변수
 
+const gameFinishBanner = new PopUp();
+gameFinishBanner.setClickListener('click', () => {
+  startGame();
+});
+
 field.addEventListener('click', onFieldClick);
 
 gameBtn.addEventListener('click', () => {
@@ -39,11 +36,6 @@ gameBtn.addEventListener('click', () => {
   } else {
     startGame();
   }
-});
-
-popUpRefresch.addEventListener('click', () => {
-  startGame();
-  hidePopUp();
 });
 
 function startGame() {
@@ -59,7 +51,7 @@ function stopGame() {
   started = false;
   stopGameTimer();
   hideGameButton();
-  showPopUpWithText(`REALPAY❓`);
+  gameFinishBanner.showWithText('REPLAY❓');
   playSound(alertSound);
   stopSound(bgSound);
 }
@@ -74,7 +66,7 @@ function finishGame(win) {
   }
   stopGameTimer();
   stopSound(bgSound);
-  showPopUpWithText(win ? `YOU WON 🎉` : `YOU LOST 💩`);
+  gameFinishBanner.showWithText(win ? `YOU WON 🎉` : `YOU LOST 💩`);
 }
 
 function showStopButton() {
@@ -117,15 +109,6 @@ function updateTimerText(time) {
   const minutes = Math.floor(time / 60); // time인데 sec로 넘어온다. 
   const seconds = time % 60 // 60으로 나누고 남은 값
   gameTimer.innerText = `${minutes}:${seconds}`;
-}
-
-function showPopUpWithText(text) {
-  popUpMessage.innerText = text;
-  popUp.classList.remove('pop-up--hide');
-}
-
-function hidePopUp() {
-  popUp.classList.add('pop-up--hide');
 }
 
 function initGame() {
