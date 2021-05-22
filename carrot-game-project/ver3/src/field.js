@@ -10,6 +10,8 @@ export default class Field {
     this.field = document.querySelector('.game__field');
     this.fieldRect = this.field.getBoundingClientRect(); // field의 전체적인 size, position 등을 알 수 있음
     this.field.addEventListener('click', this.onClick);
+    // this.onClick = this.onClick.bind(this); // 1번째 방법) bind한 뒤 전달
+    //this.field.addEventListener('click', (event) => this.onClick(event)); // 2번째 방법) arrow function은 this가 유지되니까, 콜백함수로 전달
   }
 
   init() {
@@ -42,7 +44,8 @@ export default class Field {
     }
   }
 
-  onClick = (event) => {
+  // *** this: 어떤 클래스 안에 있는 함수를 다른 콜백으로 전달할 때는 그 함수가 포함되어져 있는 클래스 정보가 사라진다. 따라서 클래스와 함수를 묶을 수 있는 바인딩 처리를 해줘야 된다. 또는 arrow function을 사용한다.
+  onClick = (event) => { // 3번째 방법) arrow function - 클래스 안에 있는 어떤 함수를 전달할 때 arrow function으로 해 놓으면 this가 잘 전달된다.
     const target = event.target;
     if (target.matches('.carrot')) {
       target.remove();
