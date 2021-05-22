@@ -1,9 +1,38 @@
 'use strict';
 
-import * as sound from './sound.js';
 import Field from './field.js';
+import * as sound from './sound.js';
 
-export default class Game {
+// Builder Pattern
+export default class GameBuilder {
+  // 1. 사용자가 아래의 함수 3개를 이용해서 구체적으로 값을 설정한 다음에 
+  gameDuration(duration) {
+    this.gameDuration = duration; // 전달받은 duration 자체를 할당한 다음
+    return this; // 이 클래스 자체를 리턴한다.
+  }
+
+  carrotCount(num) {
+    this.carrotCount = num;
+    return this;
+  }
+
+  bugCount(num) {
+    this.bugCount = num;
+    return this;
+  }
+
+  // 2. build()라는 함수를 호출하게 한다.
+  build() {
+    // console.log(this);
+    return new Game(
+      this.gameDuration,
+      this.carrotCount,
+      this.bugCount
+    );
+  }
+}
+
+class Game {
   constructor(gameDuration, carrotCount, bugCount) {
     this.gameDuration = gameDuration;
     this.carrotCount = carrotCount;
