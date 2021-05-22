@@ -2,22 +2,29 @@
 
 import PopUp from './popup.js';
 import Field from './field.js';
-import * as sound from './sound.js';
+
 
 const CARROT_COUNT = 10;
 const BUG_COUNT = 10;
 const GAME_DURATION_SEC = 10;
 
+
 const gameBtn = document.querySelector('.game__button');
 const gameTimer = document.querySelector('.game__timer');
 const gameScore = document.querySelector('.game__score');
+
+const carrotSound = new Audio('./sound/carrot_pull.mp3');
+const bugSound = new Audio('./sound/bug_pull.mp3');
+const alertSound = new Audio('./sound/alert.wav');
+const bgSound = new Audio('./sound/bg.mp3');
+const winSound = new Audio('./sound/game_win.mp3');
 
 let started = false; // 게임이 시작되었는지를 기억하는 변수
 let score = 0; // 최종 점수를 기억하는 변수
 let timer = undefined; // 총 남은 시간을 기억하는 변수
 
 const gameFinishBanner = new PopUp();
-gameFinishBanner.setClickListener('click', () => {
+gameFinishBanner.setClickListener(() => {
   startGame();
 });
 
@@ -53,25 +60,25 @@ function startGame() {
   showStopButton();
   showTimerAndScore();
   startGameTimer();
-  sound.playBackground();
+  playSound(bgSound);
 }
 
 function stopGame() {
   started = false;
   stopGameTimer();
   hideGameButton();
-  gameFinishBanner.showWithText('REPLAY❓');
-  sound.playAlert();
-  sound.stopBackground();
+  gameFinishBanner.showWithText(`REPLAY❓`);
+  playSound(alertSound);
+  stopSound(bgSound);
 }
 
 function finishGame(win) {
   started = false;
   hideGameButton();
   if (win) {
-    sound.playWin();
+    playSound(winSound);
   } else {
-    sound.playBug();
+    playSound(bugSound);
   }
   stopGameTimer();
   stopSound(bgSound);
@@ -124,6 +131,16 @@ function initGame() {
   score = 0;
   gameScore.innerText = CARROT_COUNT;
   gameField.init();
+}
+
+
+function playSound(sound) {
+  sound.currentTime = 0;
+  sound.play();
+}
+
+function stopSound(sound) {
+  sound.pause();
 }
 
 function updateScoreBoard() {

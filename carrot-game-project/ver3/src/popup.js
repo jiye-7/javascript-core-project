@@ -1,8 +1,5 @@
 'use strict';
 
-// PopUp class는 dom 요소를 가지고 와서 showWithText라는 API를 사용가자 호출하면 받아온 text를 popUp창에 보여줌
-// 사용자가 onClick이라는 클릭 리스너를 등록해놓으면, popUp에 버튼이 클릭될 때 마다 등록된 콜백함수를 호출해 주는 역할을 한다.
-
 export default class PopUp {
   constructor() {
     this.popUp = document.querySelector('.pop-up');
@@ -15,7 +12,7 @@ export default class PopUp {
   }
 
   setClickListener(onClick) {
-    this.onClick = onClick;
+    this.onClick = onClick; // PopUp 클래스의 멤버변수 onClick에 전달받은 onClick 함수를 할당한다.
   }
 
   showWithText(text) {
