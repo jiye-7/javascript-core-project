@@ -1,6 +1,6 @@
 'use strict'; // use stric은 모듈에서는 자동으로 설정된다. index.html에서 type="module"로 지정해주었다면 'use stric'가 필요 없다.
 
-const carrotSound = new Audio('./sound/carrot_pull.mp3');
+import * as sound from './sound.js';
 const CARROT_SIZE = 80;
 
 export default class Field {
@@ -9,13 +9,14 @@ export default class Field {
     this.bugCount = bugCount;
     this.field = document.querySelector('.game__field');
     this.fieldRect = this.field.getBoundingClientRect();
-    this.field.addEventListener('click', this.onClick);
-  }
+    // this.onClick = this.onClick.bind(this); // 1
+    // this.field.addEventListener('click', (e) => this.onClick(e)); // 2
+  } 
 
   init() {
     this.field.innerHTML = '';
-    this._addItem('carrot', this.carrotCount, 'img/carrot.png');
-    this._addItem('bug', this.bugCount, 'img/bug.png');
+    this._addItem(this.carrotCount, 'img/carrot.png', 'carrot');
+    this._addItem(this.bugCount, 'img/bug.png', 'bug');
   }
 
   setClickListener(onItemClick) {
@@ -44,11 +45,11 @@ export default class Field {
     }
   }
 
-  onClick(e) {
+  onClick = (e) => {
     const target = e.target;
     if (target.matches('.carrot')) {
       target.remove();
-      playSound(carrotSound);
+      sound.playCarrot();
       this.onItemClick && this.onItemClick('carrot');
     } else if (target.matches('.bug')) {
       this.onItemClick && this.onItemClick('bug');
@@ -61,9 +62,4 @@ export default class Field {
 // 똑같이 반복해서 각각의 Object에 만들어지지 않기 때문에 더 효율적이다. ---> static function이라고 부름
 function randomNumber(min, max) {
   return Math.random() * (max - min) + min;
-}
-
-function playSound(sound) {
-  sound.currentTime = 0;
-  sound.play();
 }
