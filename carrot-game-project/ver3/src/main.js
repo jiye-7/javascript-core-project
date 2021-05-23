@@ -1,7 +1,7 @@
 'use strict';
 
 import PopUp from './popup.js';
-import GameBuilder from './game.js';
+import { GameBuilder, Reason } from './game.js';
 
 const gameFinishBanner = new PopUp();
 // Build Pattern의 장점: 어떤 값을 설정하는지 알아보기 쉽다.
@@ -11,18 +11,18 @@ const game = new GameBuilder()
   .bugCount(5)
   .build();
 
-game.setGameStopListener((gameStopReason) => {
-  console.log(`result: ${gameStopReason}`);
+game.setGameStopListener((reason) => {
+  console.log(`result: ${reason}`);
   let message;
 
-  switch (gameStopReason) {
-    case 'cancel':
+  switch (reason) {
+    case Reason.cancel:
       message = 'REPLAY❓';
       break;
-    case 'win':
+    case Reason.win:
       message = 'YOU WIN 🎉';
       break;
-    case 'lose':
+    case Reason.lose:
       message = 'YOU LOST 💩';
       break;
     default:

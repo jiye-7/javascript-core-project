@@ -3,8 +3,14 @@
 import Field from './field.js';
 import * as sound from './sound.js';
 
+export const Reason = Object.freeze({
+  win: 'win',
+  lose: 'lose', 
+  cancel: 'cancel',
+});
+
 // Builder Pattern
-export default class GameBuilder {
+export class GameBuilder {
   // 1. 사용자가 아래의 함수 3개를 이용해서 구체적으로 값을 설정한 다음에 
   gameDuration(duration) {
     this.gameDuration = duration; // 전달받은 duration 자체를 할당한 다음
@@ -76,7 +82,7 @@ class Game {
     this.hideGameButton();
     sound.playAlert();
     sound.stopBackground();
-    this.onGameStop && this.onGameStop('cancel');
+    this.onGameStop && this.onGameStop(Reason.cancel);
   }
 
   finish(win) {
@@ -89,7 +95,7 @@ class Game {
     }
     this.stopGameTimer();
     sound.stopBackground();
-    this.onGameStop && this.onGameStop(win ? 'win' : 'lose');
+    this.onGameStop && this.onGameStop(win ? Reason.win : Reason.lose);
   }
 
   onItemClick = (item) => {
